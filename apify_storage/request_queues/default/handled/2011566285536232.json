@@ -1,0 +1,14 @@
+{
+    "id": "BvcbyaZ5sfv8pkm",
+    "url": "https://movie.douban.com/top250?start=175&filter=",
+    "loadedUrl": "https://movie.douban.com/top250?start=175&filter=",
+    "uniqueKey": "https://movie.douban.com/top250?filter=&start=175",
+    "method": "GET",
+    "payload": null,
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": null,
+    "headers": {},
+    "userData": {},
+    "handledAt": "2019-08-20T07:18:56.495Z"
+}

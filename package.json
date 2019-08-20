@@ -1,0 +1,25 @@
+{
+  "name": "nodecrawler",
+  "version": "1.0.0",
+  "description": "node爬虫笔记",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hp0844182/nodecrawler.git"
+  },
+  "keywords": [
+    "爬虫"
+  ],
+  "author": "HuangPeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hp0844182/nodecrawler/issues"
+  },
+  "homepage": "https://github.com/hp0844182/nodecrawler#readme",
+  "dependencies": {
+    "apify": "^0.15.5"
+  }
+}
