@@ -39,7 +39,7 @@
 
 ## 四、使用 Apify 来开始我的爬虫之旅
 
-> 首先新建一个工程然后安装 apify 依赖。
+### 1. 首先新建一个工程然后安装 apify 依赖。
 
 ```
 npm i apify -S
@@ -47,14 +47,14 @@ npm i apify -S
 
 > 接下来要确定一下爬取那个网站的信息（以豆瓣电影 Top 250 为例）
 
-现在我们已经确定了要爬取的 url(https://movie.douban.com/top250),现在开始编写代码。
+### 2.现在我们已经确定了要爬取的 url(https://movie.douban.com/top250),现在开始编写代码。
 
 ```
   // 引入apify
   const Apify = require('apify');
 ```
 
-apify 提供了一个动态队列（requestQueue）来管理我们要爬取的 url,我们可以使用它来管理我们所有要爬取的 url。
+### 3.apify 提供了一个动态队列（requestQueue）来管理我们要爬取的 url,我们可以使用它来管理我们所有要爬取的 url。
 
 ```
   const Apify = require('apify');
@@ -65,7 +65,7 @@ apify 提供了一个动态队列（requestQueue）来管理我们要爬取的 u
     await requestQueue
   })
 ```
-> 已经有了请求队列，接下来要做的是**What to crawler**。需要一个方法去解析请求的网页内容。
+### 5.已经有了请求队列，接下来要做的是**What to crawler**。需要一个方法去解析请求的网页内容。
 
 定义一个函数来解析网页内容,该函数之后会传入apify爬虫的一个实例当中
 ```
@@ -76,7 +76,7 @@ apify 提供了一个动态队列（requestQueue）来管理我们要爬取的 u
    console.log(`网页的title：${title}`);
  }
 ```
-最后，创建一个CheerioCrawler 爬虫实例，并将requestQueue，handlePageFunction作为参数传入。然后启动爬虫
+### 6.最后，创建一个CheerioCrawler 爬虫实例，并将requestQueue，handlePageFunction作为参数传入。然后启动爬虫
 ```
   const crawler = new Apify.CheerioCrawler({
         requestQueue,
@@ -119,6 +119,7 @@ apify 提供了一个动态队列（requestQueue）来管理我们要爬取的 u
 
 > 到这里，就已经实现了一个简易的爬虫，但是还没有实现我们的需求（爬取完整的top250）。我们需要动态的去添加url,才能爬取到完整的250部电影。
 
+### 8.获取所有要爬取的页面
 > 初始url是首页，我们需要获取所有页码的页面，通过解析页面，我们可以通过以下方法获取当前页面的下一页。
 ```
   // 获取下一页的地址
@@ -135,7 +136,7 @@ apify 提供了一个动态队列（requestQueue）来管理我们要爬取的 u
 ```
   requestQueue.addRequest({url:absoluteUrl});
 ```
-> 接下来需要修改一下handlePageFunction，来解析需要的电影信息。
+### 9. 接下来需要修改一下handlePageFunction，来解析需要的电影信息。
 ```
 /**
  * 解析网页，获取电影信息
@@ -155,7 +156,7 @@ function parseMovie($) {
     return movies
 }
 ```
-> 再把代码整合到一起
+### 10. 再把代码整合到一起,运行看看结果
 ```
 const Apify = require('apify');
 const { URL } = require('url');
@@ -212,6 +213,28 @@ function parseMovie($) {
 ```
 >⭐️运行下看看结果
 
+![a](https://s2.ax1x.com/2019/08/20/mJinVf.png)
+
+> 现在的运行结果已经满足我们的需求了，但是会不会觉得上面的代码有些麻烦，得找到链接、再转换、再添加到请求队列。可不可以给出一个url规则，然后程序自动帮我添加到队列中呢？
+
+### 11. 使用Apify.utils.enqueueLinks()来自动添加需要爬取的页面
+  首先引入 enqueueLinks
+  ```
+  const {
+    utils: { enqueueLinks },
+} = Apify;
+  ```
+  去掉之前url提取的代码，然后添加以下代码
+```
+   await enqueueLinks({
+            $,
+            requestQueue, 
+            selector: 'div.item > a', // 跳转的a标签
+            baseUrl: request.loadedUrl, //根据baseUrl会将a中的href补全
+        });
+```
+## 结尾
+  到这里，一个简单的爬虫程序算是写完了，但是这里还少了ip代理以及请求源伪装。后面再加上
 ## Install
 
 ```sh
